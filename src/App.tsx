@@ -4,11 +4,13 @@ import HangmanWord from "./components/HangmanWord";
 import Keyboard from './components/Keyboard';
 import words from './wordList.json'
 import './index.css'
+import Hint from "./components/Hint";
 
 function App() {
   const [wordGuess]=useState(()=>{
   return words[Math.floor(Math.random()*words.length)]
   })
+  const [hintLetter,setHintLetter]=useState("")
 
   const [guessedLetters,setguessedLetters]=useState<string[]>([])   
 
@@ -52,19 +54,22 @@ useEffect(() => {
   return (
     
     <div
-      className="max-w-[800px] flex flex-col gap-8 mx-auto my-0 items-center"
+      className="max-w-[800px] flex flex-col gap-6 mx-auto my-0 items-center"
     >
       <div className="text-4xl text-center">Guess the programing languge Name</div>
   <div className="text-3xl text-center">{isWinner?"Congratulation WINNER! Refresh to play again":isLoser?"Nice try- Refresh to try again":""}</div>
       <HangManDraw  numberOfGussing={inCorrectLetters.length}/>
-      <HangmanWord isLoser={isLoser} userLetterChosen={guessedLetters} trueWord={wordGuess} />
-      <Keyboard disabled={isLoser||isWinner} addGusedLetter={addGusedLetter} inActiveLetters={inCorrectLetters}
+      <HangmanWord hintLetter={hintLetter} isLoser={isLoser} userLetterChosen={guessedLetters} trueWord={wordGuess} />
+      <Keyboard hintLetter={hintLetter} disabled={isLoser||isWinner} addGusedLetter={addGusedLetter} inActiveLetters={inCorrectLetters}
       activeLetters={guessedLetters.filter((letter)=>{
         return wordGuess.includes(letter)
       })}
       />
+      <Hint setHintLetter={setHintLetter} wordGuess={wordGuess}/>
     </div>
   );
 }
 
 export default App;
+
+
